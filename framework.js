@@ -1,23 +1,34 @@
-(function() {
-    var init = function () {
-        addDependencies().then(function () {
-            var mochaRequiredSettings = {
-                reporter: createSimpleReporter(window.parent.__karma__)
-            };
+window.KWC = {
+    init: function () {
+        this.addDependencies();
+    },
 
-            var mochaConfig = Object.assign(mochaOptions, mochaRequiredSettings);
+    onMochaLoaded: function () {
+        var mochaRequiredSettings = {
+            ui: 'bdd',
+            reporter: this.createSimpleReporter(window.parent.__karma__)
+        };
 
-            mocha.setup(mochaConfig);
-            mocha.checkLeaks();
-            mocha.run();
+        // var mochaConfig = Object.assign(mochaOptions, mochaRequiredSettings);
+
+        mocha.setup(mochaRequiredSettings);
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var script = document.createElement('script');
+            script.innerHTML = 'mocha.checkLeaks();mocha.run();';
+            document.body.appendChild(script);
         });
-    };
+    },
 
-    var addDependencies = function () {
-        return appendScriptToHead(window.parent.MOCHA_PATH);
-    };
+    addDependencies: function () {
+        this.writeScriptToHead(window.parent.MOCHA_PATH);
+    },
 
-    var appendScriptToHead = function (src) {
+    writeScriptToHead: function (src) {
+        document.write('<script src="' + src + '" onload="KWC.onMochaLoaded()"></script>');
+    },
+
+    appendScriptToHead: function (src) {
         return new Promise(function (resolve, reject) {
             var script = document.createElement('script');
             document.head.appendChild(script);
@@ -26,9 +37,9 @@
             script.type = 'text/javascript';
             script.src = src;
         });
-    };
+    },
 
-    var createSimpleReporter = function (karma) {
+    createSimpleReporter: function (karma) {
 
         var isDebugPage = /debug.html$/.test(window.location.pathname)
 
@@ -48,8 +59,18 @@
          */
         return function (runner) {
 
+
+            runner.on('start', function () {
+                parent.postMessage({
+                    type: 'start',
+                    totalTests: runner.total
+                }, '*');
+            })
+
             runner.on('end', function () {
-                window.parent.runNextTest();
+                parent.postMessage({
+                    type: 'end'
+                }, '*')
             });
 
             runner.on('test', function (test) {
@@ -59,8 +80,8 @@
             })
 
             runner.on('fail', function (test, error) {
-                var simpleError = formatError(error)
-                var assertionError = processAssertionError(error)
+                var simpleError = KWC.formatError(error)
+                var assertionError = KWC.processAssertionError(error)
 
                 if (test.type === 'hook') {
                     test.$errors = isDebugPage ? [error] : [simpleError]
@@ -97,9 +118,9 @@
                 karma.result(result);
             });
         }
-    };
+    },
 
-    var processAssertionError = function (error_) {
+    processAssertionError: function (error_) {
         var error
 
         if (window.Mocha && error_.hasOwnProperty('showDiff')) {
@@ -116,14 +137,14 @@
         }
 
         return error
-    };
+    },
 
-    var formatError = function (error) {
+    formatError: function (error) {
         var stack = error.stack
         var message = error.message
 
         if (stack) {
-            if (message && !includes(stack, message)) {
+            if (message && !this.includes(stack, message)) {
                 stack = message + '\n' + stack
             }
 
@@ -132,10 +153,10 @@
         }
 
         return message
-    };
+    },
 
-// backwards compatible version of (Array|String).prototype.includes
-    var includes = function (collection, element, startIndex) {
+    // backwards compatible version of (Array|String).prototype.includes
+    includes: function (collection, element, startIndex) {
         if (!collection || !collection.length) {
             return false
         }
@@ -154,7 +175,7 @@
                 return true
             }
         }
-    };
+    }
+};
 
-    init();
-})();
+KWC.init();
