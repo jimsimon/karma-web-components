@@ -6,7 +6,7 @@ window.KWC = {
     onMochaLoaded: function () {
         var mochaRequiredSettings = {
             ui: 'bdd',
-            reporter: this.createSimpleReporter(window.parent.__karma__)
+            reporter: this.createSimpleReporter()
         };
 
         // var mochaConfig = Object.assign(mochaOptions, mochaRequiredSettings);
@@ -39,7 +39,7 @@ window.KWC = {
         });
     },
 
-    createSimpleReporter: function (karma) {
+    createSimpleReporter: function () {
 
         var isDebugPage = /debug.html$/.test(window.location.pathname)
 
@@ -65,7 +65,7 @@ window.KWC = {
                     type: 'start',
                     totalTests: runner.total
                 }, '*');
-            })
+            });
 
             runner.on('end', function () {
                 parent.postMessage({
@@ -115,7 +115,10 @@ window.KWC = {
                     pointer = pointer.parent
                 }
 
-                karma.result(result);
+                parent.postMessage({
+                    type: 'test end',
+                    result: result
+                }, '*');
             });
         }
     },

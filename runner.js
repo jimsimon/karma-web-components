@@ -36,8 +36,9 @@ karma.start = function() {
  */
 var handlers = {
     start: onStart,
+    'test end': onTestEnd,
     end: onEnd
-}
+};
 
 var startCount = 0;
 var endCount = 0;
@@ -60,7 +61,11 @@ function onStart(event) {
     }
 }
 
-function onEnd(event) {
+function onTestEnd(event) {
+    karma.result(event.data.result);
+}
+
+function onEnd() {
     endCount++;
     if (endCount === tests.length) {
         karma.complete();
