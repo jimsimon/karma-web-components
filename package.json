@@ -1,0 +1,12 @@
+{
+  "name": "karma-web-components",
+  "version": "1.0.0",
+  "description": "A karma framework for testing web components",
+  "main": "index.js",
+  "author": "Jim Simon",
+  "license": "MIT",
+  "dependencies": {},
+  "peerDependencies": {
+    "mocha": "*"
+  }
+}
