@@ -61,9 +61,7 @@ function onStart(event) {
 }
 
 function onEnd(event) {
-    totalTests += event.data.totalTests;
     endCount++;
-
     if (endCount === tests.length) {
         karma.complete();
     }
