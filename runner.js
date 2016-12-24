@@ -1,8 +1,12 @@
 var TEST_REGEXP = /(spec|test)\.html$/i;
+var MOCHA_REGEXP = /mocha.js$/i;
+
 var tests = [];
 Object.keys(window.__karma__.files).forEach(function (file) {
     if (TEST_REGEXP.test(file)) {
         tests.push(file);
+    } else if (MOCHA_REGEXP.test(file)) {
+        window.MOCHA_PATH = file;
     }
 });
 
