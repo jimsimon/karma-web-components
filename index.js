@@ -5,9 +5,8 @@ var pattern = function (file, included) {
 };
 
 var framework = function (files) {
-    files.unshift(pattern(path.join(path.dirname(require.resolve('mocha')), 'mocha.js'), false));
-    files.unshift(pattern(path.join(__dirname, 'framework.js'), false));
-    files.unshift(pattern(path.join(__dirname, 'runner.js'), true));
+    files.push(pattern(path.join(__dirname, 'framework.js'), false));
+    files.push(pattern(path.join(__dirname, 'runner.js'), true));
 };
 
 var proxyBowerComponentsMiddlewareFactory = function () {
