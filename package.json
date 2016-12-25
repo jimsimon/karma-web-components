@@ -7,7 +7,5 @@
   "license": "MIT",
   "dependencies": {},
   "peerDependencies": {
-    "karma-mocha": "*",
-    "mocha": "*"
   }
 }

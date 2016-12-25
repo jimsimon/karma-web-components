@@ -1,3 +1,4 @@
+// Mocha
 // BDD or QUnit
 window.before = parent.before;
 window.after = parent.after;
@@ -19,3 +20,8 @@ window.setup = parent.setup;
 window.teardown = parent.teardown;
 window.suiteSetup = parent.suiteSetup;
 window.suiteTeardown = parent.suiteTeardown;
+
+// Chai
+window.should = parent.should;
+window.expect = parent.expect;
+window.assert = parent.assert;
