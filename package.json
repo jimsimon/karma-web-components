@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "description": "A karma framework for testing web components",
   "main": "index.js",
-  "author": "Jim Simon",
+  "author": "Jim Simon <jim.j.simon@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "karma-plugin",
+    "karma-framework",
+    "web-components",
+    "web components",
+    "custom-elements",
+    "custom elements"
+  ],
   "dependencies": {
     "mime": "^1.3.4"
-  },
-  "peerDependencies": {}
+  }
 }
