@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+var mime = require('mime');
 
 var pattern = function (file, included) {
     return {pattern: file, included: included, served: true, watched: false};
@@ -12,28 +13,22 @@ var framework = function (files) {
 
 var createProxyForDirectory = function (directory) {
     return function (request, response, next) {
-        var filePath = request.url.replace('/base/', '');
-        console.log('Fragment: ' + filePath);
+        var filePath = path.join(directory, request.url.replace('/base/', ''));
         fs.exists(filePath, function (exists) {
-            if (exists) { //File exists at root, let karma attempt to serve it.
-                next();
-            } else {
-                filePath = path.join(directory, request.url.replace(/base\/|node_modules\//g, ''));
-                fs.exists(filePath, function (exists) {
-                    if (exists) { //Serve from bower_components
-                        // Content-type is very interesting part that guarantee that
-                        // Web browser will handle response in an appropriate manner.
-                        response.writeHead(200, {
-                            "Content-Type": "application/octet-stream",
-                            "Content-Disposition" : "attachment; filename=" + path.basename(filePath)});
-                        fs.createReadStream(filePath).pipe(response);
-                    } else { //Let karma serve the 404
-                        next();
-                    }
+            if (exists) { //Serve from directory
+                console.log('Proxying "' + request.url + '" to "' + filePath + '"');
+                // Content-type is very interesting part that guarantee that
+                // Web browser will handle response in an appropriate manner.
+                response.writeHead(200, {
+                    "Content-Type": mime.lookup(filePath)
                 });
+                fs.createReadStream(filePath).pipe(response);
+            } else { //Let karma serve the 404
+                console.log('Unable to find a proxy candidate for "' + request.url + '"');
+                next();
             }
         });
-    };
+    }
 };
 
 var proxyBowerComponentsMiddlewareFactory = function () {

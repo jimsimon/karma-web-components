@@ -41,8 +41,9 @@ The second step is to add framework.js to each of your test pages:
 <html>
     <head>
         <link rel="import" href="../my-element/my-element.html">
-        <!-- ... more elements -->
+        <!-- more elements and some scripts... -->
         <script src="node_modules/karma-web-components/framework.js"></script>
+        <!-- more scripts... ->
     </head>
     <body>
         <script>
@@ -51,3 +52,47 @@ The second step is to add framework.js to each of your test pages:
     </body>
 </html>
 ```
+
+### Middlewares
+Using one of the middlewares is as simple as adding an entry to the `middleware` section of your karma config:
+Note: The framework provides the middlewares, so you must add the framework in order to use them.
+
+To proxy bower_components:
+```javascript
+module.exports = function (config) {
+    config.set({
+
+        // Some config before here...
+         
+        // frameworks to use
+        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+        frameworks: ['mocha', 'web-components'],
+        
+        // middlewares to use
+        middleware: ['proxy-bower-components']
+        
+        // More config here...
+    });
+}
+```
+
+To proxy node_modules:
+```javascript
+module.exports = function (config) {
+    config.set({
+
+        // Some config before here...
+         
+        // frameworks to use
+        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+        frameworks: ['mocha', 'web-components'],
+        
+        // middlewares to use
+        middleware: ['proxy-node-modules']
+        
+        // More config here...
+    });
+}
+```
+
+Once you've added one of the middlewares, any requests for files that would 404 will be intercepted.  The middleware will check bower_components/node_modules for a file at the requested path and serve it if found.  If the file doesn't exist, you will receive a normal 404 response.

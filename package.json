@@ -5,7 +5,8 @@
   "main": "index.js",
   "author": "Jim Simon",
   "license": "MIT",
-  "dependencies": {},
-  "peerDependencies": {
-  }
+  "dependencies": {
+    "mime": "^1.3.4"
+  },
+  "peerDependencies": {}
 }
