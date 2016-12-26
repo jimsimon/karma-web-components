@@ -43,7 +43,7 @@ The second step is to add framework.js to each of your test pages:
         <link rel="import" href="../my-element/my-element.html">
         <!-- more elements and some scripts... -->
         <script src="node_modules/karma-web-components/framework.js"></script>
-        <!-- more scripts... ->
+        <!-- more scripts... -->
     </head>
     <body>
         <script>
