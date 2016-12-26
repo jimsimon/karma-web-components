@@ -15,16 +15,12 @@ var createProxyForDirectory = function (directory) {
     return function (request, response, next) {
         var filePath = path.join(directory, request.url.replace('/base/', ''));
         fs.exists(filePath, function (exists) {
-            if (exists) { //Serve from directory
-                console.log('Proxying "' + request.url + '" to "' + filePath + '"');
-                // Content-type is very interesting part that guarantee that
-                // Web browser will handle response in an appropriate manner.
+            if (exists) {
                 response.writeHead(200, {
                     "Content-Type": mime.lookup(filePath)
                 });
                 fs.createReadStream(filePath).pipe(response);
-            } else { //Let karma serve the 404
-                console.log('Unable to find a proxy candidate for "' + request.url + '"');
+            } else {
                 next();
             }
         });
