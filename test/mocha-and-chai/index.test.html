@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script src="../karma-web-components/framework.js"></script>
+    </head>
+    <body>
+        <script>
+            describe("karma-web-components using mocha and chai", function () {
+               it("works for a passing test", function () {
+                   expect(true).to.be.true;
+               });
+
+                it("works for a failing test", function () {
+                    try {
+                        expect(true).to.be.false;
+                    } catch (e) {
+                        expect(e).to.be.instanceOf(AssertionError);
+                    }
+                });
+
+                xit("works for a skipped test", function () {
+                    expect(true).to.be.true;
+                });
+            });
+        </script>
+    </body>
+</html>

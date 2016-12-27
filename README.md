@@ -1,8 +1,8 @@
 # Karma Web Components
 
 Karma Web Components is a karma plugin that provides the following:
-* A framework for running .html specs, each in their own isolated iframe
-* An optional middleware for proxying requests that go above the directory structure to bower_components directory (similar to Polyserve and Web Component Tester)
+* A framework for running *.test.html specs, each in their own isolated iframe
+* An optional middleware for proxying requests that go above the directory structure to the bower_components directory (similar to Polyserve and Web Component Tester)
 * An optional middleware for proxying requests that go above the directory structure to the node_modules directory
 
 This plugin piggybacks off of other framework plugins.  It currently supports:
