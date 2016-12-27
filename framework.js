@@ -1,5 +1,8 @@
 // Mocha
 if (parent.mocha) {
+    window.mocha = parent.mocha;
+    window.Mocha = parent.Mocha;
+
     // BDD or QUnit
     window.before = parent.before;
     window.after = parent.after;
