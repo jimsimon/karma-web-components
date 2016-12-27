@@ -111,6 +111,9 @@ module.exports = function (config) {
 
 Once you've added one of the middlewares, any requests for files that would 404 will be intercepted.  The middleware will check bower_components/node_modules for a file at the requested path and serve it if found.  If the file doesn't exist, you will receive a normal 404 response.
 
+## Full Examples
+Each subdirectory in the tests directory is a fully working example of how to use this plugin for one or more supported frameworks.  They're a great starting point if you're having trouble getting things working.
+
 ## Running the tests
 This project uses yarn instead of npm, so it's test scripts are set up to use it.  To run the tests simply install yarn, clone the repository, and then run `yarn test`.
 
