@@ -8,6 +8,7 @@
     "email": "jim.j.simon@gmail.com",
     "name": "Jim Simon"
   },
+  "contributors": [],
   "license": "MIT",
   "keywords": [
     "karma-plugin",
