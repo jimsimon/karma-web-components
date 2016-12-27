@@ -1,6 +1,6 @@
 {
   "name": "karma-web-components",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A karma framework for testing web components",
   "main": "index.js",
   "author": {
