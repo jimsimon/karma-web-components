@@ -13,17 +13,21 @@ var framework = function (files) {
 
 var createProxyForDirectory = function (directory) {
     return function (request, response, next) {
-        var filePath = path.join(directory, request.url.replace('/base/', ''));
-        fs.exists(filePath, function (exists) {
-            if (exists) {
-                response.writeHead(200, {
-                    "Content-Type": mime.lookup(filePath)
-                });
-                fs.createReadStream(filePath).pipe(response);
-            } else {
-                next();
-            }
-        });
+        if (!request.url.startsWith('/base/')) {
+            var filePath = path.join(directory, request.url);
+            fs.exists(filePath, function (exists) {
+                if (exists) {
+                    response.writeHead(200, {
+                        "Content-Type": mime.lookup(filePath)
+                    });
+                    fs.createReadStream(filePath).pipe(response);
+                } else {
+                    next();
+                }
+            });
+        } else {
+            next();
+        }
     }
 };
 
