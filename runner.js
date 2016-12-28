@@ -14,15 +14,24 @@ karma.start = function() {
     testFiles.forEach(function (testFile) {
         var iframe = document.createElement("iframe");
         document.body.appendChild(iframe);
-        iframe.src = testFile;
         iframe.onload = onIframeLoaded;
+        iframe.src = testFile;
     });
 };
 
-var onIframeLoaded = function () {
+var incrementLoadCountAndRunIfReady = function () {
     onIframeLoadedCounter++;
 
     if (onIframeLoadedCounter === testFiles.length) {
         karmaMochaStart();
+    }
+};
+
+var onIframeLoaded = function (event) {
+    var iframeWindow = event.target.contentWindow;
+    if (iframeWindow.WebComponents) {
+        iframeWindow.addEventListener("WebComponentsReady", incrementLoadCountAndRunIfReady);
+    } else {
+        incrementLoadCountAndRunIfReady();
     }
 };
